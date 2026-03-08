@@ -51,3 +51,18 @@ exports.getMachines = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+exports.deleteMachine = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) return res.status(400).json({ error: 'Machine id is required' });
+
+    const removed = await Machine.findOneAndDelete({ id });
+    if (!removed) return res.status(404).json({ error: 'Machine not found' });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Delete machine error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
